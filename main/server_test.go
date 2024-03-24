@@ -7,32 +7,38 @@ import (
 )
 
 func TestServer(t *testing.T) {
+
+	server := createPlayerServer()
+
 	t.Run("returns Pepper's score", func(t *testing.T) {
-		request, _ := http.NewRequest(http.MethodGet, "/players/Pepper", nil)
-		response := httptest.NewRecorder()
+		request, response := createRequestResponse("/players/Pepper")
 
-		PlayerServer(response, request)
+		server.ServeHTTP(response, request)
 
-		got := response.Body.String()
-		want := "20"
-
-		if got != want {
-			t.Errorf("got %q, want %q", got, want)
-		}
+		assertResponseBody(t, response.Body.String(), "20")
 	})
 
 	t.Run("returns Steve's score", func(t *testing.T) {
-		request, _ := http.NewRequest(http.MethodGet, "/players/Steve", nil)
-		response := httptest.NewRecorder()
+		request, response := createRequestResponse("/players/Steve")
 
-		PlayerServer(response, request)
+		server.ServeHTTP(response, request)
 
-		got := response.Body.String()
-		want := "10"
-
-		if got != want {
-			t.Errorf("got %q, want %q", got, want)
-		}
-
+		assertResponseBody(t, response.Body.String(), "10")
 	})
+}
+
+func createRequestResponse(playerPath string) (*http.Request, *httptest.ResponseRecorder) {
+	request, _ := http.NewRequest(http.MethodGet, playerPath, nil)
+	response := httptest.NewRecorder()
+	return request, response
+}
+
+func createPlayerServer() *PlayerServer {
+	return &PlayerServer{}
+}
+
+func assertResponseBody(t *testing.T, got string, want string) {
+	if got != want {
+		t.Errorf("got %q, want %q", got, want)
+	}
 }
