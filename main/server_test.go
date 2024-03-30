@@ -1,4 +1,4 @@
-package main
+package poker
 
 import (
 	"encoding/json"
@@ -40,7 +40,7 @@ func TestGETPlayers(t *testing.T) {
 		nil,
 	}
 	server := NewPlayerServer(&store)
-	router := createRouter(server)
+	router := CreateRouter(server)
 
 	t.Run("returns Pepper's score", func(t *testing.T) {
 		request := newGetScoreRequest("Pepper")
@@ -79,7 +79,7 @@ func TestStoreWins(t *testing.T) {
 		nil,
 	}
 	server := NewPlayerServer(&store)
-	router := createRouter(server)
+	router := CreateRouter(server)
 
 	t.Run("it records wins on POST", func(t *testing.T) {
 		player := "Pepper"
@@ -114,7 +114,7 @@ func TestLeague(t *testing.T) {
 
 		request := newLeagueRequest()
 		response := httptest.NewRecorder()
-		router := createRouter(server)
+		router := CreateRouter(server)
 
 		router.ServeHTTP(response, request)
 

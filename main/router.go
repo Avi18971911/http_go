@@ -1,11 +1,11 @@
-package main
+package poker
 
 import (
 	"net/http"
 	"strings"
 )
 
-func createRouter(p *PlayerServer) http.Handler {
+func CreateRouter(p *PlayerServer) http.Handler {
 	r := http.NewServeMux()
 	r.Handle("/players/", http.HandlerFunc(
 		func(resp http.ResponseWriter, req *http.Request) {

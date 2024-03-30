@@ -1,4 +1,4 @@
-package main
+package poker
 
 func Hello(greeting string) string {
 	if greeting == "" {
